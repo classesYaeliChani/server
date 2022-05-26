@@ -25,5 +25,21 @@ namespace BL
             courseDTO.isEnternet= cours.isEnternet;
             return courseDTO;
         }
+        public Group Convert(GroupDTO groupDTO)
+        {
+            Group group = new Group();
+            group.groupId = groupDTO.groupId;
+            group.groupName = groupDTO.groupName;
+            group.groupNumPupil = groupDTO.groupNumPupil;
+            return group;
+        }
+        public GroupDTO Convert(Group group)
+        {
+            GroupDTO groupDTO = new GroupDTO();
+            groupDTO.groupId = group.groupId;
+            groupDTO.groupName = group.groupName;
+            groupDTO.groupNumPupil = group.groupNumPupil;
+            return groupDTO;
+        }
     }
 }
