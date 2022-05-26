@@ -1,0 +1,443 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="schedulingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Courses">
+          <Key>
+            <PropertyRef Name="courseId" />
+          </Key>
+          <Property Name="courseId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="courseName" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="isEnternet" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Groups">
+          <Key>
+            <PropertyRef Name="groupId" />
+          </Key>
+          <Property Name="groupId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="groupName" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="groupNumPupil" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Rooms">
+          <Key>
+            <PropertyRef Name="classRoomId" />
+          </Key>
+          <Property Name="classRoomId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="classRoomName" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="calssRoomNumComputer" Type="int" Nullable="false" />
+          <Property Name="classRoomIsEnternet" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Schedule">
+          <Key>
+            <PropertyRef Name="scheduleId" />
+          </Key>
+          <Property Name="scheduleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="scheduleDay" Type="int" Nullable="false" />
+          <Property Name="scheduleNumLesson" Type="int" Nullable="false" />
+          <Property Name="scheduleCourseId" Type="int" Nullable="false" />
+          <Property Name="scheduleGroupId" Type="int" Nullable="false" />
+          <Property Name="scheduleClassRoomId" Type="int" />
+        </EntityType>
+        <EntityType Name="SoftWareForClassRoom">
+          <Key>
+            <PropertyRef Name="softWareId" />
+            <PropertyRef Name="classRoomId" />
+          </Key>
+          <Property Name="softWareId" Type="int" Nullable="false" />
+          <Property Name="classRoomId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SoftWareForCourses">
+          <Key>
+            <PropertyRef Name="courseId" />
+            <PropertyRef Name="softWareId" />
+          </Key>
+          <Property Name="courseId" Type="int" Nullable="false" />
+          <Property Name="softWareId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SoftWares">
+          <Key>
+            <PropertyRef Name="softWareId" />
+          </Key>
+          <Property Name="softWareId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="softWareName" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_schedule_courses">
+          <End Role="Courses" Type="Self.Courses" Multiplicity="1" />
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Courses">
+              <PropertyRef Name="courseId" />
+            </Principal>
+            <Dependent Role="Schedule">
+              <PropertyRef Name="scheduleCourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_schedule_groups1">
+          <End Role="Groups" Type="Self.Groups" Multiplicity="1" />
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groups">
+              <PropertyRef Name="groupId" />
+            </Principal>
+            <Dependent Role="Schedule">
+              <PropertyRef Name="scheduleGroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_schedule_rooms">
+          <End Role="Rooms" Type="Self.Rooms" Multiplicity="0..1" />
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rooms">
+              <PropertyRef Name="classRoomId" />
+            </Principal>
+            <Dependent Role="Schedule">
+              <PropertyRef Name="scheduleClassRoomId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_softWareForClassRoom_rooms">
+          <End Role="Rooms" Type="Self.Rooms" Multiplicity="1" />
+          <End Role="SoftWareForClassRoom" Type="Self.SoftWareForClassRoom" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rooms">
+              <PropertyRef Name="classRoomId" />
+            </Principal>
+            <Dependent Role="SoftWareForClassRoom">
+              <PropertyRef Name="classRoomId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_softWareForClassRoom_softWares">
+          <End Role="SoftWares" Type="Self.SoftWares" Multiplicity="1" />
+          <End Role="SoftWareForClassRoom" Type="Self.SoftWareForClassRoom" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SoftWares">
+              <PropertyRef Name="softWareId" />
+            </Principal>
+            <Dependent Role="SoftWareForClassRoom">
+              <PropertyRef Name="softWareId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_softWareForCourses_courses">
+          <End Role="Courses" Type="Self.Courses" Multiplicity="1" />
+          <End Role="SoftWareForCourses" Type="Self.SoftWareForCourses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Courses">
+              <PropertyRef Name="courseId" />
+            </Principal>
+            <Dependent Role="SoftWareForCourses">
+              <PropertyRef Name="courseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_softWareForCourses_softWares">
+          <End Role="SoftWares" Type="Self.SoftWares" Multiplicity="1" />
+          <End Role="SoftWareForCourses" Type="Self.SoftWareForCourses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SoftWares">
+              <PropertyRef Name="softWareId" />
+            </Principal>
+            <Dependent Role="SoftWareForCourses">
+              <PropertyRef Name="softWareId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="schedulingModelStoreContainer">
+          <EntitySet Name="Courses" EntityType="Self.Courses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Groups" EntityType="Self.Groups" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rooms" EntityType="Self.Rooms" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Schedule" EntityType="Self.Schedule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SoftWareForClassRoom" EntityType="Self.SoftWareForClassRoom" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SoftWareForCourses" EntityType="Self.SoftWareForCourses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SoftWares" EntityType="Self.SoftWares" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_schedule_courses" Association="Self.FK_schedule_courses">
+            <End Role="Courses" EntitySet="Courses" />
+            <End Role="Schedule" EntitySet="Schedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_schedule_groups1" Association="Self.FK_schedule_groups1">
+            <End Role="Groups" EntitySet="Groups" />
+            <End Role="Schedule" EntitySet="Schedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_schedule_rooms" Association="Self.FK_schedule_rooms">
+            <End Role="Rooms" EntitySet="Rooms" />
+            <End Role="Schedule" EntitySet="Schedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_softWareForClassRoom_rooms" Association="Self.FK_softWareForClassRoom_rooms">
+            <End Role="Rooms" EntitySet="Rooms" />
+            <End Role="SoftWareForClassRoom" EntitySet="SoftWareForClassRoom" />
+          </AssociationSet>
+          <AssociationSet Name="FK_softWareForClassRoom_softWares" Association="Self.FK_softWareForClassRoom_softWares">
+            <End Role="SoftWares" EntitySet="SoftWares" />
+            <End Role="SoftWareForClassRoom" EntitySet="SoftWareForClassRoom" />
+          </AssociationSet>
+          <AssociationSet Name="FK_softWareForCourses_courses" Association="Self.FK_softWareForCourses_courses">
+            <End Role="Courses" EntitySet="Courses" />
+            <End Role="SoftWareForCourses" EntitySet="SoftWareForCourses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_softWareForCourses_softWares" Association="Self.FK_softWareForCourses_softWares">
+            <End Role="SoftWares" EntitySet="SoftWares" />
+            <End Role="SoftWareForCourses" EntitySet="SoftWareForCourses" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="schedulingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Cours">
+          <Key>
+            <PropertyRef Name="courseId" />
+          </Key>
+          <Property Name="courseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="courseName" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="isEnternet" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Schedules" Relationship="Self.FK_schedule_courses" FromRole="Courses" ToRole="Schedule" />
+          <NavigationProperty Name="SoftWares" Relationship="Self.SoftWareForCourses" FromRole="Courses" ToRole="SoftWares" />
+        </EntityType>
+        <EntityType Name="Group">
+          <Key>
+            <PropertyRef Name="groupId" />
+          </Key>
+          <Property Name="groupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="groupName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="groupNumPupil" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Schedules" Relationship="Self.FK_schedule_groups1" FromRole="Groups" ToRole="Schedule" />
+        </EntityType>
+        <EntityType Name="Room">
+          <Key>
+            <PropertyRef Name="classRoomId" />
+          </Key>
+          <Property Name="classRoomId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="classRoomName" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="calssRoomNumComputer" Type="Int32" Nullable="false" />
+          <Property Name="classRoomIsEnternet" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Schedules" Relationship="Self.FK_schedule_rooms" FromRole="Rooms" ToRole="Schedule" />
+          <NavigationProperty Name="SoftWares" Relationship="Self.SoftWareForClassRoom" FromRole="Rooms" ToRole="SoftWares" />
+        </EntityType>
+        <EntityType Name="Schedule">
+          <Key>
+            <PropertyRef Name="scheduleId" />
+          </Key>
+          <Property Name="scheduleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="scheduleDay" Type="Int32" Nullable="false" />
+          <Property Name="scheduleNumLesson" Type="Int32" Nullable="false" />
+          <Property Name="scheduleCourseId" Type="Int32" Nullable="false" />
+          <Property Name="scheduleGroupId" Type="Int32" Nullable="false" />
+          <Property Name="scheduleClassRoomId" Type="Int32" />
+          <NavigationProperty Name="Cours" Relationship="Self.FK_schedule_courses" FromRole="Schedule" ToRole="Courses" />
+          <NavigationProperty Name="Group" Relationship="Self.FK_schedule_groups1" FromRole="Schedule" ToRole="Groups" />
+          <NavigationProperty Name="Room" Relationship="Self.FK_schedule_rooms" FromRole="Schedule" ToRole="Rooms" />
+        </EntityType>
+        <EntityType Name="SoftWare">
+          <Key>
+            <PropertyRef Name="softWareId" />
+          </Key>
+          <Property Name="softWareId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="softWareName" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Rooms" Relationship="Self.SoftWareForClassRoom" FromRole="SoftWares" ToRole="Rooms" />
+          <NavigationProperty Name="Courses" Relationship="Self.SoftWareForCourses" FromRole="SoftWares" ToRole="Courses" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_schedule_courses">
+          <End Role="Courses" Type="Self.Cours" Multiplicity="1" />
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Courses">
+              <PropertyRef Name="courseId" />
+            </Principal>
+            <Dependent Role="Schedule">
+              <PropertyRef Name="scheduleCourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_schedule_groups1">
+          <End Role="Groups" Type="Self.Group" Multiplicity="1" />
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groups">
+              <PropertyRef Name="groupId" />
+            </Principal>
+            <Dependent Role="Schedule">
+              <PropertyRef Name="scheduleGroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_schedule_rooms">
+          <End Role="Rooms" Type="Self.Room" Multiplicity="0..1" />
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rooms">
+              <PropertyRef Name="classRoomId" />
+            </Principal>
+            <Dependent Role="Schedule">
+              <PropertyRef Name="scheduleClassRoomId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SoftWareForClassRoom">
+          <End Role="Rooms" Type="Self.Room" Multiplicity="*" />
+          <End Role="SoftWares" Type="Self.SoftWare" Multiplicity="*" />
+        </Association>
+        <Association Name="SoftWareForCourses">
+          <End Role="Courses" Type="Self.Cours" Multiplicity="*" />
+          <End Role="SoftWares" Type="Self.SoftWare" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="schedulingEntities4" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Courses" EntityType="Self.Cours" />
+          <EntitySet Name="Groups" EntityType="Self.Group" />
+          <EntitySet Name="Rooms" EntityType="Self.Room" />
+          <EntitySet Name="Schedules" EntityType="Self.Schedule" />
+          <EntitySet Name="SoftWares" EntityType="Self.SoftWare" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <AssociationSet Name="FK_schedule_courses" Association="Self.FK_schedule_courses">
+            <End Role="Courses" EntitySet="Courses" />
+            <End Role="Schedule" EntitySet="Schedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_schedule_groups1" Association="Self.FK_schedule_groups1">
+            <End Role="Groups" EntitySet="Groups" />
+            <End Role="Schedule" EntitySet="Schedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_schedule_rooms" Association="Self.FK_schedule_rooms">
+            <End Role="Rooms" EntitySet="Rooms" />
+            <End Role="Schedule" EntitySet="Schedules" />
+          </AssociationSet>
+          <AssociationSet Name="SoftWareForClassRoom" Association="Self.SoftWareForClassRoom">
+            <End Role="Rooms" EntitySet="Rooms" />
+            <End Role="SoftWares" EntitySet="SoftWares" />
+          </AssociationSet>
+          <AssociationSet Name="SoftWareForCourses" Association="Self.SoftWareForCourses">
+            <End Role="Courses" EntitySet="Courses" />
+            <End Role="SoftWares" EntitySet="SoftWares" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="schedulingModelStoreContainer" CdmEntityContainer="schedulingEntities4">
+          <EntitySetMapping Name="Courses">
+            <EntityTypeMapping TypeName="schedulingModel.Cours">
+              <MappingFragment StoreEntitySet="Courses">
+                <ScalarProperty Name="courseId" ColumnName="courseId" />
+                <ScalarProperty Name="courseName" ColumnName="courseName" />
+                <ScalarProperty Name="isEnternet" ColumnName="isEnternet" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Groups">
+            <EntityTypeMapping TypeName="schedulingModel.Group">
+              <MappingFragment StoreEntitySet="Groups">
+                <ScalarProperty Name="groupId" ColumnName="groupId" />
+                <ScalarProperty Name="groupName" ColumnName="groupName" />
+                <ScalarProperty Name="groupNumPupil" ColumnName="groupNumPupil" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rooms">
+            <EntityTypeMapping TypeName="schedulingModel.Room">
+              <MappingFragment StoreEntitySet="Rooms">
+                <ScalarProperty Name="classRoomId" ColumnName="classRoomId" />
+                <ScalarProperty Name="classRoomName" ColumnName="classRoomName" />
+                <ScalarProperty Name="calssRoomNumComputer" ColumnName="calssRoomNumComputer" />
+                <ScalarProperty Name="classRoomIsEnternet" ColumnName="classRoomIsEnternet" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Schedules">
+            <EntityTypeMapping TypeName="schedulingModel.Schedule">
+              <MappingFragment StoreEntitySet="Schedule">
+                <ScalarProperty Name="scheduleId" ColumnName="scheduleId" />
+                <ScalarProperty Name="scheduleDay" ColumnName="scheduleDay" />
+                <ScalarProperty Name="scheduleNumLesson" ColumnName="scheduleNumLesson" />
+                <ScalarProperty Name="scheduleCourseId" ColumnName="scheduleCourseId" />
+                <ScalarProperty Name="scheduleGroupId" ColumnName="scheduleGroupId" />
+                <ScalarProperty Name="scheduleClassRoomId" ColumnName="scheduleClassRoomId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SoftWares">
+            <EntityTypeMapping TypeName="schedulingModel.SoftWare">
+              <MappingFragment StoreEntitySet="SoftWares">
+                <ScalarProperty Name="softWareId" ColumnName="softWareId" />
+                <ScalarProperty Name="softWareName" ColumnName="softWareName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="schedulingModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="SoftWareForClassRoom" TypeName="schedulingModel.SoftWareForClassRoom" StoreEntitySet="SoftWareForClassRoom">
+            <EndProperty Name="Rooms">
+              <ScalarProperty Name="classRoomId" ColumnName="classRoomId" />
+            </EndProperty>
+            <EndProperty Name="SoftWares">
+              <ScalarProperty Name="softWareId" ColumnName="softWareId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="SoftWareForCourses" TypeName="schedulingModel.SoftWareForCourses" StoreEntitySet="SoftWareForCourses">
+            <EndProperty Name="Courses">
+              <ScalarProperty Name="courseId" ColumnName="courseId" />
+            </EndProperty>
+            <EndProperty Name="SoftWares">
+              <ScalarProperty Name="softWareId" ColumnName="softWareId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

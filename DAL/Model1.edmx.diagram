@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="5eb4017e2743404286982789ac5a88e8" Name="Diagram1">
+        <EntityTypeShape EntityType="schedulingModel.Cours" Width="1.5" PointX="0.75" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="schedulingModel.Group" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="schedulingModel.Room" Width="1.5" PointX="0.75" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="schedulingModel.Schedule" Width="1.5" PointX="3" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="schedulingModel.SoftWare" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="schedulingModel.sysdiagram" Width="1.5" PointX="5.75" PointY="1.625" IsExpanded="true" />
+        <AssociationConnector Association="schedulingModel.FK_schedule_courses" ManuallyRouted="false" />
+        <AssociationConnector Association="schedulingModel.FK_schedule_groups1" ManuallyRouted="false" />
+        <AssociationConnector Association="schedulingModel.FK_schedule_rooms" ManuallyRouted="false" />
+        <AssociationConnector Association="schedulingModel.SoftWareForClassRoom" ManuallyRouted="false" />
+        <AssociationConnector Association="schedulingModel.SoftWareForCourses" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
